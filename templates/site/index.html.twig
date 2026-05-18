@@ -1,0 +1,281 @@
+{% extends 'site/base.html.twig' %}
+
+{# LCP: сначала герой (видео). pm-deco ниже — без lazy + fetchpriority, иначе Lighthouse ругается на «нельзя отложить LCP-изображение». #}
+{% block vendor_stylesheets %}
+    {{ parent() }}
+    {# as=video без type: часть браузеров ругается на preload+type для webm. #}
+    <link rel="preload" href="{{ asset('videos/slider.webm') }}" as="video">
+{% endblock %}
+
+{% block body_class %}site-layout wp-landing{% endblock %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ app.request.schemeAndHttpHost ~ canonical_path }}">{% endblock %}
+
+{% block site_content %}
+<section class="sl-hero sl-hero--wide-wave sl-u-antialiased" aria-labelledby="wp-hero-title">
+    <div class="sl-hero__deco-lines" aria-hidden="true"></div>
+    {# Волна как прозрачный SVG-слой (не <img>): URL версионируется через asset(). #}
+    <div
+        class="sl-hero__wave-svg"
+        style="--sl-hero-wave-url: url('{{ asset('images/wp-hero-wide-wave.svg') }}');"
+        aria-hidden="true"
+    ></div>
+    <div class="container">
+        <div class="sl-hero__grid">
+            <div class="sl-hero__intro sl-reveal sl-u-flex sl-u-flex-col">
+                <h1 id="wp-hero-title" class="sl-u-text-balance">{{ 'index.hero_h1_before'|trans({}, 'site') }}<span class="sl-hero__h1-accent">{{ 'index.hero_h1_accent'|trans({}, 'site') }}</span>{{ 'index.hero_h1_after'|trans({}, 'site') }}</h1>
+            </div>
+            <div class="sl-hero__visual sl-reveal sl-reveal--delay" aria-hidden="true">
+                <video class="sl-hero__video" autoplay muted loop playsinline disablepictureinpicture preload="auto" fetchpriority="high">
+                    <source src="{{ asset('videos/slider.webm') }}" type="video/webm">
+                    <source src="{{ asset('videos/slider.mp4') }}" type="video/mp4">
+                </video>
+            </div>
+            <div class="sl-hero__after sl-reveal sl-u-flex sl-u-flex-col">
+                <p class="sl-hero__lead sl-u-text-pretty">{{ 'index.hero_lead'|trans({}, 'site') }}</p>
+                <div class="sl-hero__actions">
+                    <a href="{{ path('site_contacts') }}" class="sl-button sl-button--primary sl-button--wp-hero sl-button--wp-hero-pattern sl-u-inline-flex sl-u-items-center sl-u-gap-10">
+                        {{ 'index.cta_try_free'|trans({}, 'site') }}
+                        {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sl-wp-workmgmt sl-u-antialiased" aria-labelledby="wp-pm-title">
+    <div class="sl-wp-workmgmt__inner">
+        <div class="sl-wp-workmgmt__row sl-wp-workmgmt__row--60">
+            <div class="sl-wp-workmgmt__col sl-wp-workmgmt__col--pm">
+                <div class="sl-wp-workmgmt__pm-deco" aria-hidden="true">
+                    <img class="sl-wp-workmgmt__pm-deco-img" src="{{ asset('images/wp-workmgmt-pm-deco.svg') }}" width="441" height="449" alt="" decoding="async" fetchpriority="high"/>
+                </div>
+                <div class="sl-wp-workmgmt__copy">
+                    {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.pm_title'|trans({}, 'site'), underline: 'index.pm_underline'|trans({}, 'site'), id: 'wp-pm-title', heading_class: 'sl-wp-h1-dark' } %}
+                    <p class="sl-wp-p2-dark">{{ 'index.pm_text'|trans({}, 'site') }}</p>
+                    <a href="{{ path('site_contacts') }}" class="sl-button sl-button--wp-secondary sl-u-inline-flex sl-u-items-center sl-u-gap-10">{{ 'index.cta_start'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+                </div>
+            </div>
+            <div class="sl-wp-ph sl-wp-ph--686" aria-hidden="true"></div>
+        </div>
+        <div class="sl-wp-workmgmt__row sl-wp-workmgmt__row--100">
+            <div class="sl-wp-worktogether-visual">
+                {% include 'site/_wp_work_together_illus.html.twig' %}
+            </div>
+            <div class="sl-wp-workmgmt__copy">
+                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.wt_title'|trans({}, 'site'), underline: 'index.wt_underline'|trans({}, 'site'), id: 'wp-worktogether-title', heading_class: 'sl-wp-h1-dark' } %}
+                <p class="sl-wp-p2-dark">{{ 'index.wt_text'|trans({}, 'site') }}</p>
+                <a href="{{ path('site_contacts') }}" class="sl-button sl-button--wp-secondary sl-u-inline-flex sl-u-items-center sl-u-gap-10">{{ 'index.cta_try_free'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sl-product sl-u-antialiased" aria-labelledby="wp-extension-title">
+    <div class="container">
+        <div class="sl-product__grid">
+            <div class="sl-product__copy">
+                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.prod_title'|trans({}, 'site'), underline: 'index.prod_underline'|trans({}, 'site'), id: 'wp-extension-title', heading_class: 'sl-u-text-balance', on_navy: true, underline_image: 'images/wp-headline-underline-personal-assistant.svg', underline_width: 315, underline_height: 24, underline_on_navy_filter: false } %}
+                <p>{{ 'index.prod_text'|trans({}, 'site') }}</p>
+                <div class="sl-hero__actions">
+                    <a href="{{ path('site_about') }}" class="sl-button sl-button--primary sl-button--wp-extension sl-u-inline-flex sl-u-items-center sl-u-gap-10">
+                        {{ 'index.cta_about'|trans({}, 'site') }}
+                        {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}
+                    </a>
+                </div>
+            </div>
+            <div class="sl-u-desktop-only-ph" aria-hidden="true">
+                <div class="sl-wp-ph sl-wp-ph--686 sl-wp-ph--r-ext"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sl-wp-customize-light sl-u-antialiased" aria-labelledby="wp-custom2-title">
+    <div class="sl-wp-customize-light__inner">
+        <div class="sl-u-desktop-only-ph" aria-hidden="true">
+            <div class="sl-wp-ph sl-wp-ph--686"></div>
+        </div>
+        <div class="sl-wp-customize-light__copy">
+            {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.cust_title'|trans({}, 'site'), underline: 'index.cust_underline'|trans({}, 'site'), id: 'wp-custom2-title', heading_class: 'sl-wp-h1-dark' } %}
+            <p class="sl-wp-p2-dark">{{ 'index.cust_text'|trans({}, 'site') }}</p>
+            <a href="{{ path('site_contacts') }}" class="sl-button sl-button--primary sl-button--wp-hero sl-u-inline-flex sl-u-items-center sl-u-gap-10">{{ 'index.cta_contact_us'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+        </div>
+    </div>
+</section>
+
+<section class="sl-section sl-wp-pricing-section sl-u-antialiased" id="wp-pricing" aria-labelledby="wp-pricing-title">
+    <div class="container">
+        <div class="sl-section-heading sl-wp-pricing-section__heading">
+            {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.price_title'|trans({}, 'site'), underline: 'index.price_underline'|trans({}, 'site'), id: 'wp-pricing-title', heading_class: 'sl-u-text-balance', wrap_extra: 'sl-wp-heading-wrap--center' } %}
+            <p>{{ 'index.price_intro'|trans({}, 'site') }}</p>
+        </div>
+        <div class="sl-feature-grid sl-wp-pricing-section__grid">
+            <article class="sl-feature-card sl-wp-pricing-card sl-u-flex sl-u-flex-col">
+                <h3>{{ 'index.plan_start'|trans({}, 'site') }}</h3>
+                <p class="sl-wp-pricing-card__price"><strong>{% if app.request.locale == 'en' %}$0{% else %}₽0{% endif %}</strong></p>
+                <p class="sl-wp-pricing-card__lead">{{ 'index.plan_start_lead'|trans({}, 'site') }}</p>
+                <ul class="sl-wp-price-points">
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_start_p1'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_start_p2'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_start_p3'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_start_p4'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_start_p5'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_start_p6'|trans({}, 'site') }}</span></li>
+                </ul>
+                <a href="{{ path('site_contacts') }}" class="sl-button sl-button--wp-card-footer sl-u-mt-auto sl-u-inline-flex sl-u-justify-center">{{ 'index.card_start_cta'|trans({}, 'site') }}</a>
+            </article>
+            <article class="sl-feature-card sl-feature-card--dark sl-feature-card--featured sl-wp-pricing-card sl-u-flex sl-u-flex-col">
+                <h3>{{ 'index.plan_team'|trans({}, 'site') }}</h3>
+                <p class="sl-wp-pricing-card__price sl-wp-pricing-card__price--with-period"><strong>{% if app.request.locale == 'en' %}$50{% else %}₽3&nbsp;000{% endif %}</strong><span class="sl-wp-pricing-card__period">{{ 'index.price_per_month'|trans({}, 'site') }}</span></p>
+                <p class="sl-wp-pricing-card__lead">{{ 'index.plan_team_lead'|trans({}, 'site') }}</p>
+                <ul class="sl-wp-price-points sl-wp-price-points--on-dark">
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_team_p1'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_team_p2'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_team_p3'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_team_p4'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_team_p5'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_team_p6'|trans({}, 'site') }}</span></li>
+                </ul>
+                <a href="{{ path('site_contacts') }}" class="sl-button sl-button--primary sl-u-mt-auto sl-u-inline-flex sl-u-justify-center">{{ 'index.card_team_cta'|trans({}, 'site') }}</a>
+            </article>
+            <article class="sl-feature-card sl-wp-pricing-card sl-u-flex sl-u-flex-col">
+                <h3>{{ 'index.plan_company'|trans({}, 'site') }}</h3>
+                <p class="sl-wp-pricing-card__price sl-wp-pricing-card__price--with-period"><strong>{% if app.request.locale == 'en' %}$100{% else %}₽7&nbsp;000{% endif %}</strong><span class="sl-wp-pricing-card__period">{{ 'index.price_per_month'|trans({}, 'site') }}</span></p>
+                <p class="sl-wp-pricing-card__lead">{{ 'index.plan_company_lead'|trans({}, 'site') }}</p>
+                <ul class="sl-wp-price-points">
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_company_p1'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_company_p2'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_company_p3'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_company_p4'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_company_p5'|trans({}, 'site') }}</span></li>
+                    <li><span class="sl-wp-check" aria-hidden="true"></span><span>{{ 'index.plan_company_p6'|trans({}, 'site') }}</span></li>
+                </ul>
+                <a href="{{ path('site_contacts') }}" class="sl-button sl-button--wp-card-footer sl-u-mt-auto sl-u-inline-flex sl-u-justify-center">{{ 'index.card_company_cta'|trans({}, 'site') }}</a>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="sl-wp-your-work sl-u-antialiased" aria-labelledby="wp-yw-title">
+    <div class="sl-wp-your-work__deco" aria-hidden="true">
+        <img class="sl-wp-your-work__deco-img" src="{{ asset('images/wp-your-work-deco.svg') }}" width="502" height="837" alt="" decoding="async"/>
+    </div>
+    <div class="sl-wp-your-work__inner">
+        {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.yw_title'|trans({}, 'site'), underline: 'index.yw_underline'|trans({}, 'site'), id: 'wp-yw-title', heading_class: 'sl-wp-your-work__title', wrap_extra: 'sl-wp-heading-wrap--center', on_navy: true, underline_image: 'images/wp-headline-underline-your-work.svg', underline_width: 315, underline_height: 24, underline_on_navy_filter: false } %}
+        <p class="sl-wp-p2-center">{{ 'index.yw_text'|trans({}, 'site') }}</p>
+        <a href="{{ path('site_contacts') }}" class="sl-button sl-button--primary sl-button--wp-hero sl-button--wp-hero-pattern sl-u-inline-flex sl-u-items-center sl-u-gap-10">{{ 'index.cta_try_free'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+    </div>
+</section>
+
+<section class="sl-wp-your-data sl-u-antialiased" aria-labelledby="wp-yd-title">
+    <div class="sl-wp-your-data__inner">
+        <div class="sl-wp-your-data__copy">
+            {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.yd_title'|trans({}, 'site'), underline: 'index.yd_underline'|trans({}, 'site'), id: 'wp-yd-title', heading_class: 'sl-wp-h1-dark' } %}
+            <p class="sl-wp-p2-dark">{{ 'index.yd_text'|trans({}, 'site') }}</p>
+            <a href="{{ path('site_contacts') }}" class="sl-button sl-button--primary sl-button--wp-hero sl-u-inline-flex sl-u-items-center sl-u-gap-10">{{ 'index.cta_learn_more'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+        </div>
+        <div class="sl-wp-your-data__visual" aria-hidden="true">
+            <img class="sl-wp-your-data__illus-img" src="{{ asset('images/wp-your-data-illus.svg') }}" width="759" height="400" alt="" loading="lazy" decoding="async"/>
+        </div>
+    </div>
+</section>
+
+<section class="sl-wp-sponsors sl-u-antialiased" aria-labelledby="wp-sp-title">
+    <div class="sl-wp-sponsors__inner">
+        {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.sponsors_title'|trans({}, 'site'), id: 'wp-sp-title', heading_class: 'sl-wp-h1-dark sl-u-text-center', wrap_extra: 'sl-wp-heading-wrap--center' } %}
+        {% include 'site/_wp_sponsors_icons.html.twig' %}
+    </div>
+</section>
+
+<section class="sl-wp-apps sl-u-antialiased" aria-labelledby="wp-apps-title">
+    <div class="sl-wp-apps__inner">
+        <div class="sl-wp-apps__visual" aria-hidden="true"></div>
+        <div class="sl-wp-apps__content">
+            {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.apps_title'|trans({}, 'site'), underline: 'index.apps_underline'|trans({}, 'site'), id: 'wp-apps-title', heading_class: 'sl-u-text-balance', on_navy: true, underline_image: 'images/wp-headline-underline-personal-assistant.svg', underline_width: 315, underline_height: 24, underline_on_navy_filter: false } %}
+            <p class="sl-wp-p2-light">{{ 'index.apps_text'|trans({}, 'site') }}</p>
+            <a href="{{ path('site_about') }}" class="sl-button sl-button--primary sl-button--wp-hero sl-u-inline-flex sl-u-items-center sl-u-gap-10">{{ 'index.cta_read_more'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+        </div>
+    </div>
+</section>
+
+<section class="sl-wp-testimonial sl-u-antialiased" aria-labelledby="wp-ts-title">
+    <div class="sl-wp-testimonial__inner">
+        {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.ts_title'|trans({}, 'site'), underline: 'index.ts_underline'|trans({}, 'site'), id: 'wp-ts-title', heading_class: 'sl-u-text-center', wrap_extra: 'sl-wp-heading-wrap--center' } %}
+        <div class="sl-wp-testimonial__row">
+            <article class="sl-wp-tcard">
+                <div class="sl-wp-tcard__quote">
+                    <span class="sl-wp-quote-icon" aria-hidden="true">“</span>
+                    <p>{{ 'index.ts1_quote'|trans({}, 'site') }}</p>
+                </div>
+                <div class="sl-wp-tcard__who">
+                    <div class="sl-wp-tcard__avatar" aria-hidden="true"></div>
+                    <div>
+                        <p class="sl-wp-tcard__name">{{ 'index.ts1_name'|trans({}, 'site') }}</p>
+                        <p class="sl-wp-tcard__role">{{ 'index.ts1_role'|trans({}, 'site') }}</p>
+                    </div>
+                </div>
+            </article>
+            <article class="sl-wp-tcard sl-wp-tcard--accent">
+                <div class="sl-wp-tcard__quote sl-wp-tcard__quote--accent">
+                    <span class="sl-wp-quote-icon" aria-hidden="true">“</span>
+                    <p>{{ 'index.ts2_quote'|trans({}, 'site') }}</p>
+                </div>
+                <div class="sl-wp-tcard__who">
+                    <div class="sl-wp-tcard__avatar sl-wp-tcard__avatar--b" aria-hidden="true"></div>
+                    <div>
+                        <p class="sl-wp-tcard__name">{{ 'index.ts2_name'|trans({}, 'site') }}</p>
+                        <p class="sl-wp-tcard__role">{{ 'index.ts2_role'|trans({}, 'site') }}</p>
+                    </div>
+                </div>
+            </article>
+            <article class="sl-wp-tcard sl-wp-tcard--accent">
+                <div class="sl-wp-tcard__quote sl-wp-tcard__quote--accent">
+                    <span class="sl-wp-quote-icon" aria-hidden="true">“</span>
+                    <p>{{ 'index.ts3_quote'|trans({}, 'site') }}</p>
+                </div>
+                <div class="sl-wp-tcard__who">
+                    <div class="sl-wp-tcard__avatar sl-wp-tcard__avatar--c" aria-hidden="true"></div>
+                    <div>
+                        <p class="sl-wp-tcard__name">{{ 'index.ts3_name'|trans({}, 'site') }}</p>
+                        <p class="sl-wp-tcard__role">{{ 'index.ts3_role'|trans({}, 'site') }}</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="sl-home-blog sl-u-antialiased" aria-labelledby="wp-home-blog-title">
+    <div class="container">
+        {% set locale_suffix = app.request.locale == 'en' ? 'en' : 'ru' %}
+        <div class="sl-home-blog__head">
+            {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'index.blog_recent_title'|trans({}, 'site'), id: 'wp-home-blog-title', heading_class: 'sl-wp-h1-dark' } %}
+            <a class="sl-home-blog__all sl-wp-text-link" href="{{ path('site_blog.' ~ locale_suffix) }}">{{ 'index.blog_all'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+        </div>
+        <div class="sl-post-grid sl-post-grid--wp sl-home-blog__grid">
+            {% set post1_href = path('site_blog_post_monitoring.' ~ locale_suffix) %}
+            <article class="sl-post-card sl-post-card--wp">
+                <span>{{ 'blog.post1_tag'|trans({}, 'site') }}</span>
+                <h2><a class="sl-post-card__title-link" href="{{ post1_href }}">{{ 'blog.post1_title'|trans({}, 'site') }}</a></h2>
+                <p>{{ 'blog.post1_text'|trans({}, 'site') }}</p>
+            </article>
+            {% set post2_href = path('site_blog_post_kpi_metrics.' ~ locale_suffix) %}
+            <article class="sl-post-card sl-post-card--wp sl-post-card--wp-accent">
+                <span>{{ 'blog.post2_tag'|trans({}, 'site') }}</span>
+                <h2><a class="sl-post-card__title-link" href="{{ post2_href }}">{{ 'blog.post2_title'|trans({}, 'site') }}</a></h2>
+                <p>{{ 'blog.post2_text'|trans({}, 'site') }}</p>
+            </article>
+            <article class="sl-post-card sl-post-card--wp">
+                <span>{{ 'blog.post3_tag'|trans({}, 'site') }}</span>
+                <h2><a class="sl-post-card__title-link" href="{{ path('site_blog.' ~ locale_suffix) ~ '#blog-post-3' }}" data-turbo="false">{{ 'blog.post3_title'|trans({}, 'site') }}</a></h2>
+                <p>{{ 'blog.post3_text'|trans({}, 'site') }}</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

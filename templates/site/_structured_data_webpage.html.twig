@@ -1,0 +1,12 @@
+{# JSON-LD WebPage graph for public site — kept separate from base.html.twig for simpler reviews. #}
+{% set schema_graph = site_ld_graph(
+    'webpage',
+    site_origin,
+    page_url,
+    locale,
+    org_name,
+    logo_url,
+    page_title,
+    page_description
+) %}
+{% include 'site/_json_ld.html.twig' with { graph: schema_graph } %}

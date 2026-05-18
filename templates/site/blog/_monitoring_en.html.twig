@@ -1,0 +1,182 @@
+<h2>Introduction</h2>
+<p>If you run an e-commerce store, clinic, or service business, you hear “Why is the competitor cheaper?” at least once a week. Manual price collection means dozens of open tabs, messy spreadsheets, and lost margin.</p>
+<p>At Smyalichi we walked this path ourselves — first collecting prices by hand for our own healthcare project, then automating it, and later turning the stack into a dedicated monitoring product at <a href="https://price.smyalichi.ru" rel="noopener noreferrer" target="_blank" data-turbo="false">price.smyalichi.ru</a>.</p>
+<p>This article is a step-by-step playbook that works beyond medical clinics: from food delivery to construction materials.</p>
+
+<h2>Step 1. Define data sources — where prices come from</h2>
+<p>The classic early mistake is trying to monitor everyone at once. Start small.</p>
+
+<h3>Who to include</h3>
+<ul>
+    <li><strong>Direct competitors (3–5 companies in your region)</strong> — your day-to-day benchmark</li>
+    <li><strong>Market leaders (1–2 large chains)</strong> — for strategic positioning</li>
+    <li><strong>Unexpected competitors</strong> — e.g. clinics in a neighboring city winning your patients with online consults</li>
+</ul>
+
+<h3>Data sources</h3>
+<ul>
+    <li><strong>Competitor websites</strong> — the main channel: product/service pages, promos, category listings</li>
+    <li><strong>Published price lists</strong> — PDF or Excel on their sites</li>
+    <li><strong>Marketplace listings</strong> — when your category lives there (pharma, parts, electronics)</li>
+    <li><strong>Aggregator APIs</strong> — advanced, for large-scale collection</li>
+</ul>
+
+<div class="sl-wp-article__note">
+    <p><strong>From our practice.</strong> For the “MRI Leader” healthcare project we started with three competitor sites in one city and five key exams (brain, spine, joints MRI, etc.). That was enough to see 30–40% spreads on comparable studies.</p>
+</div>
+
+<h2>Step 2. Matching rules — the hard technical problem</h2>
+<p>You collected a thousand prices from five sites. How do you know competitor A’s “abdominal ultrasound” is the same as competitor B’s “ultrasound of abdominal organs?”</p>
+<p>Your matching rule stack is the brain of the monitor.</p>
+
+<h3>Identification hierarchy</h3>
+<p>Layer rules strictly:</p>
+<ul>
+    <li><strong>Level 1 — your internal ID.</strong> If you have SKU/article in your system, anchor on it.</li>
+    <li><strong>Level 2 — exact title match.</strong> Identical names or identical after noise cleanup.</li>
+    <li><strong>Level 3 — partial / keyword match.</strong> Brand, model, key attributes.</li>
+    <li><strong>Level 4 — manual match.</strong> Everything the model misses goes to a human.</li>
+</ul>
+
+<h3>In practice</h3>
+<p>In Smyalichi we combine:</p>
+<ul>
+    <li>Custom PHP (Symfony) parsers for collection</li>
+    <li>Regex cleanup for noisy titles</li>
+    <li>Partial rules for near-duplicates (“knee MRI” vs “MRI of the knee joint”)</li>
+    <li>A UI for unmatched rows</li>
+</ul>
+<p><strong>Important:</strong> do not chase 100% automation. 80–90% auto-match is a strong outcome.</p>
+
+<h2>Step 3. Refresh cadence — how often to update</h2>
+<p>Cadence depends on category and goals.</p>
+<div class="sl-wp-table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Suggested cadence</th>
+                <th>Why</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Retail, delivery</td>
+                <td>1–4× per day</td>
+                <td>Promo-driven volatility</td>
+            </tr>
+            <tr>
+                <td>Electronics, construction</td>
+                <td>Daily</td>
+                <td>Enough to react</td>
+            </tr>
+            <tr>
+                <td>Medical services, B2B services</td>
+                <td>1–2× per week</td>
+                <td>Prices move slower</td>
+            </tr>
+            <tr>
+                <td>Flights, hotels</td>
+                <td>Near real-time</td>
+                <td>Dynamic pricing</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<p>For medical monitoring we picked twice a week — Tuesday and Thursday afternoons. By then competitors usually refreshed weekly pricing, and we still had runway before Friday to act.</p>
+
+<h2>Step 4. Comparison mechanics — how to analyse</h2>
+<p>You have the dataset. Now what?</p>
+
+<h3>Baseline report metrics</h3>
+<ul>
+    <li>Compare competitor average to your price — show % delta</li>
+    <li>One matrix: every competitor vs each of your SKUs/services</li>
+    <li>Per item: min, max, and market average</li>
+    <li>Day-over-day tracking — simple charts on key SKUs</li>
+</ul>
+
+<h3>Traffic-light priorities</h3>
+<ul>
+    <li><strong>Red</strong> — you are &gt;10% above market on top sellers → act</li>
+    <li><strong>Amber</strong> — +3–10% → watch</li>
+    <li><strong>Green</strong> — below or aligned with market → healthy</li>
+</ul>
+
+<div class="sl-wp-article__note">
+    <p><strong>Smyalichi report example.</strong> On one clinic site a competitor’s spine MRI looked 22% cheaper. On inspection, their quote excluded the radiology report. The client adjusted price but kept the report bundled — conversion improved.</p>
+</div>
+
+<h2>Step 5. Operationalising change — responding to signals</h2>
+<p>Monitoring is useless if decisions do not follow.</p>
+
+<h3>When a competitor cuts price</h3>
+<ul>
+    <li><strong>Match the cut</strong> — to regain leadership (watch for price wars)</li>
+    <li><strong>Add value</strong> — hold price, strengthen the bundle (speed, reporting, warranty)</li>
+    <li><strong>Segment offers</strong> — price-sensitive vs premium service buyers</li>
+</ul>
+
+<h3>Rituals with ready-made reports</h3>
+<ul>
+    <li><strong>Weekly 15-minute review:</strong> traffic light + decisions on red items</li>
+    <li><strong>Telegram alerts:</strong> “Competitor thyroid ultrasound is 15% below yours — suggested response…”</li>
+    <li><strong>Monthly strategy:</strong> trend review and pricing adjustments</li>
+</ul>
+
+<h2>Tooling by stage</h2>
+<div class="sl-wp-table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Stage</th>
+                <th>Tooling</th>
+                <th>Time to launch</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Manual, up to ~10 SKUs</td>
+                <td>Spreadsheets + site walkthrough</td>
+                <td>1 day</td>
+            </tr>
+            <tr>
+                <td>Automated up to ~100 SKUs</td>
+                <td><a href="https://price.smyalichi.ru" rel="noopener noreferrer" target="_blank" data-turbo="false">price.smyalichi.ru</a></td>
+                <td>1–2 days setup</td>
+            </tr>
+            <tr>
+                <td>Industrial 1000+ SKUs</td>
+                <td>price.smyalichi.ru API + ERP (e.g. 1C)</td>
+                <td>1–2 weeks</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h2>Common mistakes</h2>
+<ul>
+    <li><strong>Monitoring too many players</strong> → start with 3–5 competitors and 20–50 hero SKUs</li>
+    <li><strong>Reacting to every tick</strong> → only meaningful moves (≈5–10%)</li>
+    <li><strong>Ignoring bundle terms</strong> → compare apples to apples (shipping, warranty, service)</li>
+    <li><strong>No automated reporting</strong> → you will drown in sheets; use Telegram/email digests</li>
+    <li><strong>Stale competitor lists</strong> → refresh every 3–6 months; new entrants appear</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Competitor price monitoring is not a one-off project — it is an operating rhythm: sources, matching, automation, and — most importantly — actions driven by the data.</p>
+<p>Start small: three competitors, twenty critical SKUs, and a guided setup on Smyalichi; within two weeks you will see how much market signal you were missing.</p>
+
+<div class="sl-wp-article__note">
+    <p><strong>P.S.</strong> When we launched monitoring for “MRI Leader”, I spent two days on manual collection. On day three I started the parser. A month later the tool saved ~5 hours weekly on collection alone — time we reinvested in service quality and patient acquisition.</p>
+    <p>We productised those tools as Smyalichi — readers can start a 30-day trial at <a href="https://price.smyalichi.ru" rel="noopener noreferrer" target="_blank" data-turbo="false">price.smyalichi.ru</a>; we help wire the first sources.</p>
+</div>
+
+<div class="sl-wp-article__author-card">
+    <img class="sl-wp-article__author-photo" src="{{ asset('images/authors/evgeniy-voyner.png') }}" alt="Evgeniy Voyner" loading="lazy" decoding="async"/>
+    <div class="sl-wp-article__author-meta">
+        <p class="sl-wp-article__author-name">Evgeniy Voyner</p>
+        <p class="sl-wp-article__author-role">Technical Director, LLC Smyalichi</p>
+        <p class="sl-wp-article__author-note">Based on real-world experience building and operating the Smyalichi price monitoring platform.</p>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+{% set _route = app.request.attributes.get('_route') %}
+{% if _route is not null and _route starts with 'site_' %}
+    {% set _rp = app.request.attributes.get('_route_params')|default({}) %}
+    {% set url_ru = path(_route ~ '.ru', _rp) %}
+    {% set url_en = path(_route ~ '.en', _rp) %}
+    <nav class="site-footer__wp-lang-switch" aria-label="{{ 'locale.switch_label'|trans({}, 'site') }}">
+        <span class="site-footer__wp-lang-icon">{% include 'site/_icon.html.twig' with { name: 'globe2' } %}</span>
+        <a href="{{ url_ru }}" class="site-footer__wp-lang-link{{ app.request.locale == 'ru' ? ' is-active' : '' }}" hreflang="ru" lang="ru" data-turbo="false">{{ 'locale.ru'|trans({}, 'site') }}</a>
+        <span class="site-footer__wp-lang-sep" aria-hidden="true">·</span>
+        <a href="{{ url_en }}" class="site-footer__wp-lang-link{{ app.request.locale == 'en' ? ' is-active' : '' }}" hreflang="en" lang="en" data-turbo="false">{{ 'locale.en'|trans({}, 'site') }}</a>
+    </nav>
+{% endif %}

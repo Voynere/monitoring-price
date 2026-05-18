@@ -1,0 +1,45 @@
+{# Заголовок + SVG под подстрокой `underline` (если задана и входит в title); иначе под вторым словом.
+   underline_image: путь под public/ (по умолчанию images/wp-headline-underline.svg)
+   underline_width / underline_height: атрибуты img
+   underline_on_navy_filter: если false при on_navy — без класса --on-navy (уже цветной SVG) #}
+{% set ul_img = underline_image|default('images/wp-headline-underline.svg') %}
+{% set ul_w = underline_width|default(483) %}
+{% set ul_h = underline_height|default(30) %}
+{% set navy_underline = on_navy|default(false) and underline_on_navy_filter|default(true) %}
+{% set t = title|trim %}
+{% set u = underline|default('')|trim %}
+{% if u != '' and u in t %}
+    {% set _parts = t|split(u) %}
+    {% set w1 = (_parts[0]|default(''))|trim %}
+    {% set w2 = u %}
+    {% set wrest = _parts|length > 1 ? _parts|slice(1)|join(u)|trim : '' %}
+{% else %}
+    {% set words = t|split(' ') %}
+    {% set w1 = words|first %}
+    {% set w2 = words|length > 1 ? words[1] : '' %}
+    {% set wrest = words|length > 2 ? words|slice(2)|join(' ') : '' %}
+{% endif %}
+{% set lvl = level|default(2) %}
+<div class="sl-wp-heading-wrap {{ wrap_extra|default('')|trim }}">
+    {% set hc = heading_class|default('')|trim %}
+    {% if lvl == 1 %}
+        <h1{% if id|default('') %} id="{{ id }}"{% endif %} class="sl-wp-headline--split{{ hc ? ' ' ~ hc : '' }}">
+    {% else %}
+        <h2{% if id|default('') %} id="{{ id }}"{% endif %} class="sl-wp-headline--split{{ hc ? ' ' ~ hc : '' }}">
+    {% endif %}
+    {% if title_url|default('') %}
+        <a class="sl-post-card__title-link" href="{{ title_url }}">
+    {% endif %}
+    {% if w2 == '' %}
+        <span class="sl-wp-headline__single-stack">
+            <img class="sl-wp-headline-underline-svg{% if navy_underline %} sl-wp-headline-underline-svg--on-navy{% endif %}" src="{{ asset(ul_img) }}" width="{{ ul_w }}" height="{{ ul_h }}" alt="" decoding="async"/>
+            <span class="sl-wp-headline__single">{{ w1 }}</span>
+        </span>
+    {% else %}
+        {% if w1 != '' %}<span class="sl-wp-headline__w1">{{ w1 }}</span>{% endif %}<span class="sl-wp-headline__w2block"><img class="sl-wp-headline-underline-svg{% if navy_underline %} sl-wp-headline-underline-svg--on-navy{% endif %}" src="{{ asset(ul_img) }}" width="{{ ul_w }}" height="{{ ul_h }}" alt="" decoding="async"/><span class="sl-wp-headline__w2">{{ w2 }}</span></span>{% if wrest != '' %}<span class="sl-wp-headline__tail"> {{ wrest }}</span>{% endif %}
+    {% endif %}
+    {% if title_url|default('') %}
+        </a>
+    {% endif %}
+    {% if lvl == 1 %}</h1>{% else %}</h2>{% endif %}
+</div>

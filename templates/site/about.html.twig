@@ -1,0 +1,44 @@
+{% extends 'site/base.html.twig' %}
+
+{% block body_class %}site-layout wp-landing{% endblock %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ app.request.schemeAndHttpHost ~ canonical_path }}">{% endblock %}
+
+{% block site_content %}
+<section class="sl-inner-hero sl-inner-hero--wp">
+    <div class="sl-hero__deco-lines" aria-hidden="true"></div>
+    <div class="container">
+        <span class="sl-chip sl-chip--wp">{{ 'about.chip'|trans({}, 'site') }}</span>
+        {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'about.hero_title'|trans({}, 'site'), underline: 'about.hero_underline'|trans({}, 'site'), id: 'wp-about-hero-title', level: 1, wrap_extra: 'sl-wp-heading-wrap--center', on_navy: true, underline_image: 'images/wp-headline-underline-personal-assistant.svg', underline_width: 315, underline_height: 24, underline_on_navy_filter: false } %}
+        <p>{{ 'about.hero_lead'|trans({}, 'site') }}</p>
+    </div>
+</section>
+
+<section class="sl-inner-section sl-inner-section--wp">
+    <div class="container">
+        <div class="sl-split-panel sl-split-panel--wp">
+            <div>
+                <span class="sl-chip sl-chip--wp-muted">{{ 'about.mission_chip'|trans({}, 'site') }}</span>
+                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'about.mission_title'|trans({}, 'site'), id: 'wp-about-mission-title' } %}
+                <p>{{ 'about.mission_text'|trans({}, 'site') }}</p>
+            </div>
+            <div class="sl-card-list sl-card-list--wp">
+                <article>
+                    <strong>{{ 'about.stat1_k'|trans({}, 'site') }}</strong>
+                    <span>{{ 'about.stat1_t'|trans({}, 'site') }}</span>
+                </article>
+                <article>
+                    <strong>{{ 'about.stat2_k'|trans({}, 'site') }}</strong>
+                    <span>{{ 'about.stat2_t'|trans({}, 'site') }}</span>
+                </article>
+                <article>
+                    <strong>{{ 'about.stat3_k'|trans({}, 'site') }}</strong>
+                    <span>{{ 'about.stat3_t'|trans({}, 'site') }}</span>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+<div class="site-footer__panel site-footer__panel--wp">
+    <div class="site-footer__wp-top">
+        <div class="site-footer__wp-col site-footer__wp-col--brand">
+            <a class="site-brand site-brand--footer site-brand--wp-footer" href="{{ path('site_home') }}" aria-label="{{ 'footer.wp_brand'|trans({}, 'site') }}">
+                {% include 'site/_site_brand_wordmark_wp.html.twig' %}
+            </a>
+            <p class="site-footer__wp-desc">{{ 'footer.wp_desc'|trans({}, 'site') }}</p>
+        </div>
+        <div class="site-footer__wp-col">
+            <p class="site-footer__wp-heading">{{ 'footer.wp_product'|trans({}, 'site') }}</p>
+            <a href="{{ path('site_about') }}">{{ 'footer.wp_overview'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_home') }}#wp-pricing" data-turbo="false">{{ 'nav.wp_pricing'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_contacts') }}">{{ 'footer.wp_customer_stories'|trans({}, 'site') }}</a>
+        </div>
+        <div class="site-footer__wp-col">
+            <p class="site-footer__wp-heading">{{ 'footer.wp_resources'|trans({}, 'site') }}</p>
+            <a href="{{ path('site_blog') }}">{{ 'footer.wp_blog'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_news') }}">{{ 'footer.wp_news_guides'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_contacts') }}">{{ 'footer.wp_help'|trans({}, 'site') }}</a>
+        </div>
+        <div class="site-footer__wp-col">
+            <p class="site-footer__wp-heading">{{ 'footer.wp_company'|trans({}, 'site') }}</p>
+            <a href="{{ path('site_about') }}">{{ 'footer.wp_about_us'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_contacts') }}">{{ 'nav.wp_contacts'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_contacts') }}">{{ 'footer.wp_press'|trans({}, 'site') }}</a>
+        </div>
+    </div>
+    <div class="site-footer__wp-bottom">
+        <div class="site-footer__wp-bottom-left">
+            {% include 'site/_site_locale_switch.html.twig' %}
+            <a href="{{ path('site_contacts') }}">{{ 'footer.wp_privacy'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_contacts') }}">{{ 'footer.wp_security'|trans({}, 'site') }}</a>
+            <a href="{{ path('site_contacts') }}">{{ 'footer.wp_status'|trans({}, 'site') }}</a>
+            <span>© {{ "now"|date("Y") }} {{ 'footer.wp_brand'|trans({}, 'site') }}</span>
+        </div>
+        <div class="site-footer__wp-social" aria-label="{{ 'aria.social_footer'|trans({}, 'site') }}">
+            <a href="{{ path('site_contacts') }}" aria-label="{{ 'aria.telegram'|trans({}, 'site') }}">{% include 'site/_icon.html.twig' with { name: 'send' } %}</a>
+            <a href="{{ path('site_contacts') }}" aria-label="{{ 'aria.vk'|trans({}, 'site') }}">{% include 'site/_icon.html.twig' with { name: 'chat-dots' } %}</a>
+        </div>
+    </div>
+    <hr class="site-footer__wp-rule"/>
+</div>

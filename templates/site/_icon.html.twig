@@ -1,0 +1,23 @@
+{# Inline SVG icons for public site to avoid bootstrap-icons font payload. #}
+{% set icon_class = class|default('site-icon') %}
+{% if name == 'arrow-right' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8.2 2.4a.75.75 0 0 1 1.06 0l5.1 5.1a.75.75 0 0 1 0 1.06l-5.1 5.1a.75.75 0 1 1-1.06-1.06L12 8.75H1.75a.75.75 0 0 1 0-1.5H12L8.2 3.46a.75.75 0 0 1 0-1.06z"/></svg>
+{% elseif name == 'person-circle' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1.25a6.75 6.75 0 1 1 0 13.5 6.75 6.75 0 0 1 0-13.5zm0 1.5a5.25 5.25 0 0 0-3.66 9.02 4.8 4.8 0 0 1 7.32 0A5.25 5.25 0 0 0 8 2.75zm0 2.1a2.1 2.1 0 1 0 0 4.2 2.1 2.1 0 0 0 0-4.2z"/></svg>
+{% elseif name == 'telephone' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M2.2 1.9a1 1 0 0 1 1.03-.44l2.2.55a1 1 0 0 1 .75.93l.06 1.92a1 1 0 0 1-.29.75L4.9 6.66a11.3 11.3 0 0 0 4.45 4.45l1.05-1.05a1 1 0 0 1 .75-.29l1.92.06a1 1 0 0 1 .93.75l.55 2.2a1 1 0 0 1-.44 1.03l-1.2.8a2 2 0 0 1-1.84.2C5.91 12.82 3.18 10.09 1.2 4.94a2 2 0 0 1 .2-1.84l.8-1.2z"/></svg>
+{% elseif name == 'box-arrow-in-right' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M10.75 2.25A1.75 1.75 0 0 1 12.5 4v2.25a.75.75 0 0 1-1.5 0V4a.25.25 0 0 0-.25-.25h-6.5A.25.25 0 0 0 4 4v8c0 .14.11.25.25.25h6.5A.25.25 0 0 0 11 12V9.75a.75.75 0 0 1 1.5 0V12a1.75 1.75 0 0 1-1.75 1.75h-6.5A1.75 1.75 0 0 1 2.5 12V4c0-.97.78-1.75 1.75-1.75h6.5z"/><path fill="currentColor" d="M8.22 5.22a.75.75 0 0 1 1.06 0L12 7.94l-2.72 2.72a.75.75 0 1 1-1.06-1.06l1.44-1.44H5a.75.75 0 0 1 0-1.5h4.66L8.22 6.28a.75.75 0 0 1 0-1.06z"/></svg>
+{% elseif name == 'telegram' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M14.9 2.1a.8.8 0 0 0-.86-.12L1.5 6.9a.7.7 0 0 0 .04 1.31l3.1.98 1.2 3.79a.7.7 0 0 0 1.19.3l1.72-1.8 2.95 2.17a.8.8 0 0 0 1.25-.48L15 2.8a.8.8 0 0 0-.1-.7zM6.6 8.8l5.78-4.65-4.65 5.8-.2 2.05-.93-2.95z"/></svg>
+{% elseif name == 'chat-dots-fill' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M2 2.75A1.75 1.75 0 0 1 3.75 1h8.5A1.75 1.75 0 0 1 14 2.75v6.5A1.75 1.75 0 0 1 12.25 11H6.7L3.6 13.7A.75.75 0 0 1 2 13.12V11.1A1.75 1.75 0 0 1 .75 9.43V2.75H2zm3.25 2.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2.75 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2.75 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+{% elseif name == 'send' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M15.35 1.35a.8.8 0 0 0-.83-.19L1.2 6.2a.7.7 0 0 0 .03 1.32l4.75 1.5 1.5 4.75a.7.7 0 0 0 1.32.03l5.04-13.3a.8.8 0 0 0-.19-.83zM7.28 8.72l4.8-4.8-5.72 6.93-.63-1.98 1.55-.15z"/></svg>
+{% elseif name == 'chat-dots' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.75 2.5a.25.25 0 0 0-.25.25v6.5c0 .14.11.25.25.25h.4l.1 1.78 1.92-1.78h6.08a.25.25 0 0 0 .25-.25v-6.5a.25.25 0 0 0-.25-.25h-8.5zM2 2.75C2 1.78 2.78 1 3.75 1h8.5C13.22 1 14 1.78 14 2.75v6.5c0 .97-.78 1.75-1.75 1.75H6.75l-2.64 2.45a.75.75 0 0 1-1.26-.52L2.75 11A1.75 1.75 0 0 1 2 9.52V2.75zm3.25 2.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2.75 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2.75 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+{% elseif name == 'globe2' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1.25a6.75 6.75 0 1 1 0 13.5 6.75 6.75 0 0 1 0-13.5zm4.96 6A5.26 5.26 0 0 0 9.9 2.55c.52 1.1.84 2.48.92 3.95h2.14zm-3.64 0c-.1-1.44-.45-2.75-.98-3.73A5.2 5.2 0 0 0 7.66 3.5c-.53.98-.88 2.3-.98 3.75h2.64zm-4.16 0c.08-1.47.4-2.85.92-3.95A5.26 5.26 0 0 0 3.04 7.25h2.12zm-2.12 1.5a5.26 5.26 0 0 0 3.04 3.95c-.52-1.1-.84-2.48-.92-3.95H3.04zm3.64 0c.1 1.44.45 2.75.98 3.73.22.03.45.05.68.05.23 0 .46-.02.68-.05.53-.98.88-2.3.98-3.73H6.68zm4.16 0c-.08 1.47-.4 2.85-.92 3.95a5.26 5.26 0 0 0 3.04-3.95h-2.12z"/></svg>
+{% elseif name == 'arrow-up-short' %}
+    <svg class="{{ icon_class }}" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 3.2a.75.75 0 0 1 .53.22l4.1 4.1a.75.75 0 0 1-1.06 1.06L8.75 5.76V12a.75.75 0 0 1-1.5 0V5.76L4.43 8.58a.75.75 0 1 1-1.06-1.06l4.1-4.1A.75.75 0 0 1 8 3.2z"/></svg>
+{% endif %}

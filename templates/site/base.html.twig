@@ -1,0 +1,257 @@
+{% extends 'base.html.twig' %}
+
+{# Turbo Drive: только публичный site; кабинет price остаётся на entrypoint `app` без @hotwired/turbo. #}
+{% block javascript_entry %}{{ encore_entry_script_tags('site_app') }}{% endblock %}
+
+{% block html_lang %}{{ app.request.locale }}{% endblock %}
+
+{% block hreflang %}
+    {% set origin = app.request.schemeAndHttpHost %}
+    {% set _route = app.request.attributes.get('_route') %}
+    {% set _rp = app.request.attributes.get('_route_params')|default({}) %}
+    {% if _route is not null and _route starts with 'site_' %}
+        {# Локализованные маршруты site: в роутере — отдельные имена с суффиксами .ru и .en #}
+        {% set path_ru = path(_route ~ '.ru', _rp) %}
+        {% set path_en = path(_route ~ '.en', _rp) %}
+    {% elseif app.request.locale == 'en' %}
+        {% set path_ru = app.request.pathInfo == '/en' ? '/' : '/' ~ app.request.pathInfo|slice(3) %}
+        {% set path_en = app.request.pathInfo %}
+    {% else %}
+        {% set path_ru = app.request.pathInfo %}
+        {% set path_en = app.request.pathInfo == '/' ? '/en' : '/en' ~ app.request.pathInfo %}
+    {% endif %}
+    <link rel="alternate" hreflang="ru" href="{{ origin ~ path_ru }}">
+    <link rel="alternate" hreflang="en" href="{{ origin ~ path_en }}">
+    <link rel="alternate" hreflang="x-default" href="{{ origin ~ path_ru }}">
+{% endblock %}
+
+{# Open Graph / Twitter: только публичный сайт (site/base). #}
+{% block og_extra %}
+    {% set _og_image = absolute_url(asset('images/smyalichi-landmark-logo.png')) %}
+    {% set _brand = 'footer.wp_brand'|trans({}, 'site') %}
+    <meta property="og:site_name" content="{{ _brand }}">
+    <meta property="og:locale" content="{{ app.request.locale == 'en' ? 'en_US' : 'ru_RU' }}">
+    {% if app.request.locale == 'en' %}
+        <meta property="og:locale:alternate" content="ru_RU">
+    {% else %}
+        <meta property="og:locale:alternate" content="en_US">
+    {% endif %}
+    <meta property="og:image" content="{{ _og_image }}">
+    <meta property="og:image:secure_url" content="{{ _og_image }}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="{{ 'schema.og_image_alt'|trans({}, 'site') }}">
+{% endblock %}
+
+{% block twitter_card %}
+    {% set _og_image = absolute_url(asset('images/smyalichi-landmark-logo.png')) %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ block('og_title') }}">
+    <meta name="twitter:description" content="{{ block('og_description') }}">
+    <meta name="twitter:image" content="{{ _og_image }}">
+{% endblock %}
+
+{% block structured_data %}
+    {% set site_origin = app.request.schemeAndHttpHost %}
+    {% set page_url = site_origin ~ app.request.pathInfo %}
+    {% set org_name = 'footer.wp_brand'|trans({}, 'site') %}
+    {% set logo_url = absolute_url(asset('images/smyalichi-landmark-logo.png')) %}
+    {% set page_title = block('title') %}
+    {% set page_description = block('meta_description') %}
+    {% include 'site/_structured_data_webpage.html.twig' with {
+        site_origin: site_origin,
+        page_url: page_url,
+        locale: app.request.locale,
+        org_name: org_name,
+        logo_url: logo_url,
+        page_title: page_title,
+        page_description: page_description,
+    } only %}
+{% endblock %}
+
+{% block body_class %}site-layout{% endblock %}
+
+{% block vendor_stylesheets %}
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    {% if app.environment == 'prod' %}
+        {# Метрика подгружается после load — ранний preconnect к коллекторам экономит RTT при первом запросе. #}
+        <link rel="preconnect" href="https://mc.yandex.ru" crossorigin>
+        <link rel="preconnect" href="https://mc.yandex.com" crossorigin>
+    {% endif %}
+{% endblock %}
+{% block app_stylesheet %}{{ encore_entry_link_tags('site_app') }}{% endblock %}
+{% block stylesheets %}{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% set site_route = app.request.attributes.get('_route') %}
+    {% set wp_shell = site_route is not null and (
+        site_route starts with 'site_home'
+        or site_route starts with 'site_about'
+        or site_route starts with 'site_blog'
+        or site_route starts with 'site_news'
+        or site_route starts with 'site_contacts'
+    ) %}
+    <div class="site-page-shell">
+        <div class="site-noise" aria-hidden="true"></div>
+        <header class="site-header{{ wp_shell ? ' site-header--wp' : '' }}">
+            {% if wp_shell %}
+                <div class="site-header__deco" aria-hidden="true"></div>
+            {% endif %}
+            <nav class="navbar navbar-expand-lg site-navbar" aria-label="{{ 'aria.main_nav'|trans({}, 'site') }}">
+                <div class="container site-navbar__inner">
+                    <a class="site-brand" href="{{ path('site_home') }}" aria-label="{{ 'aria.brand'|trans({}, 'site') }}">
+                        {% if wp_shell %}
+                            {% include 'site/_site_brand_wordmark_wp.html.twig' %}
+                        {% else %}
+                            <span class="site-brand__mark">
+                                <img src="{{ asset('images/smyalichi-landmark-logo.png') }}" alt="">
+                            </span>
+                            <span class="site-brand__text">{{ 'aria.brand'|trans({}, 'site') }}</span>
+                        {% endif %}
+                    </a>
+                    {% if wp_shell %}
+                        <div class="site-navbar-mobile-cluster d-flex d-lg-none align-items-center flex-shrink-0">
+                            <a class="site-navbar-icon-btn" href="https://price.smyalichi.ru/login" rel="noopener noreferrer" data-turbo="false" aria-label="{{ 'aria.account'|trans({}, 'site') }}">
+                                {% include 'site/_icon.html.twig' with { name: 'person-circle' } %}
+                            </a>
+                            <a class="site-navbar-icon-btn" href="tel:+79084499292" data-turbo="false" aria-label="{{ 'aria.call'|trans({}, 'site') }}">
+                                {% include 'site/_icon.html.twig' with { name: 'telephone' } %}
+                            </a>
+                            <button class="navbar-toggler site-menu-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="{{ 'aria.open_menu'|trans({}, 'site') }}">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                    {% else %}
+                        <button class="navbar-toggler site-menu-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="{{ 'aria.open_menu'|trans({}, 'site') }}">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                    {% endif %}
+                    <div class="offcanvas offcanvas-start offcanvas-lg flex-grow-1 site-nav-offcanvas site-nav-collapse{{ wp_shell ? ' site-nav-collapse--wp' : '' }}" tabindex="-1" id="siteNav" aria-labelledby="siteNavDrawerLabel" data-aria-open="{{ 'aria.open_menu'|trans({}, 'site')|e('html_attr') }}" data-aria-close="{{ 'aria.close_menu'|trans({}, 'site')|e('html_attr') }}">
+                    <span class="visually-hidden" id="siteNavDrawerLabel">{{ 'aria.drawer_label'|trans({}, 'site') }}</span>
+                    <div class="offcanvas-body site-nav-offcanvas-body{{ wp_shell ? ' site-nav-offcanvas-body--wp' : '' }}">
+                        {% if not wp_shell %}
+                            <div class="site-nav-mobile-tools d-lg-none" aria-label="{{ 'aria.mobile_tools'|trans({}, 'site') }}">
+                                <a class="site-nav-mobile-tools__link" href="https://price.smyalichi.ru/login" rel="noopener noreferrer" data-turbo="false">
+                                    {% include 'site/_icon.html.twig' with { name: 'box-arrow-in-right', class: 'site-icon site-nav-mobile-tools__icon' } %}
+                                    <span>{{ 'nav.login_mobile'|trans({}, 'site') }}</span>
+                                </a>
+                                <a class="site-nav-mobile-tools__link site-nav-mobile-tools__link--phone" href="tel:+79084499292" data-turbo="false">
+                                    {% include 'site/_icon.html.twig' with { name: 'telephone', class: 'site-icon site-nav-mobile-tools__icon' } %}
+                                    <span class="visually-hidden">{{ 'aria.call'|trans({}, 'site') }}</span>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if wp_shell %}
+                            <a class="site-brand site-nav-offcanvas-brand d-lg-none" href="{{ path('site_home') }}" aria-label="{{ 'aria.brand_home_wp'|trans({}, 'site') }}">
+                                {% include 'site/_site_brand_wordmark_wp.html.twig' %}
+                            </a>
+                            <div class="site-nav-offcanvas-scroll">
+                                <ul class="navbar-nav site-nav site-nav--wp">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('site_about') }}">{{ 'nav.wp_products'|trans({}, 'site') }}<span class="wp-nav-chevron" aria-hidden="true"><svg width="9" height="4" viewBox="0 0 9 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.5L4.5 3.5L8.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('site_blog') }}">{{ 'nav.wp_solutions'|trans({}, 'site') }}<span class="wp-nav-chevron" aria-hidden="true"><svg width="9" height="4" viewBox="0 0 9 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.5L4.5 3.5L8.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('site_news') }}">{{ 'nav.wp_resources'|trans({}, 'site') }}<span class="wp-nav-chevron" aria-hidden="true"><svg width="9" height="4" viewBox="0 0 9 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.5L4.5 3.5L8.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('site_home') }}#wp-pricing" data-turbo="false">{{ 'nav.wp_pricing'|trans({}, 'site') }}<span class="wp-nav-chevron" aria-hidden="true"><svg width="9" height="4" viewBox="0 0 9 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.5L4.5 3.5L8.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('site_contacts') }}">{{ 'nav.wp_contacts'|trans({}, 'site') }}<span class="wp-nav-chevron" aria-hidden="true"><svg width="9" height="4" viewBox="0 0 9 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.5L4.5 3.5L8.5 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="site-nav-offcanvas-tail">
+                                <div class="site-header-actions">
+                                    <a class="site-header-login" href="https://price.smyalichi.ru/login" rel="noopener noreferrer" data-turbo="false">{{ 'nav.wp_login'|trans({}, 'site') }}</a>
+                                    <a class="site-header-cta site-header-cta--trial" href="{{ path('site_contacts') }}">{{ 'nav.wp_trial'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a>
+                                </div>
+                                <div class="site-nav-offcanvas-foot d-lg-none">
+                                    <a class="site-nav-offcanvas-foot__phone" href="tel:+79084499292" data-turbo="false">+7 908 449-92-92</a>
+                                    <p class="site-nav-offcanvas-foot__legal">{{ 'footer.company_legal'|trans({}, 'site') }}</p>
+                                    <div class="site-nav-offcanvas-social" aria-label="{{ 'aria.social_nav'|trans({}, 'site') }}">
+                                        {# Ссылки ведут на контакты, пока нет отдельных публичных URL сообществ #}
+                                        <a class="site-nav-offcanvas-social__link" href="{{ path('site_contacts') }}" aria-label="{{ 'aria.vk'|trans({}, 'site') }}"><svg class="site-nav-offcanvas-social__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.389-.013 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-1.836-1.692-.921-1.084-1.342-1.234-1.581-1.234-.301 0-.39.085-.39.497v1.521c0 .356-.102.568-1.046.568-1.563 0-3.273-.593-4.692-1.893-1.894-1.893-2.917-4.477-2.917-4.477-.119-.297-.084-.458.19-.458h1.744c.418 0 .548.203.705.593 0 0 .802 1.84 1.793 3.354.408.593.593.802.832.802.301 0 .432-.19.432-.695v-2.709c-.085-.816-.5-1.105-.5-1.355 0-.178.136-.356.432-.356h2.74c.356 0 .483.178.483.557v3.898c0 .356.169.508.271.508.171 0 .322-.102.627-.407 1.004-1.145 1.726-2.894 1.726-2.894.102-.254.271-.407.688-.407h1.744c.525 0 .636.271.509.695-.212.729-1.203 2.215-2.248 3.451-.373.44-.508.644-.508.932 0 .271.136.407.373.678.102.119 1.451 1.4 1.92 2.282.373.644.508 1.094.381 1.503-.119.407-.509.611-1.033.611z"/></svg></a>
+                                        <a class="site-nav-offcanvas-social__link" href="{{ path('site_contacts') }}" aria-label="{{ 'aria.ok'|trans({}, 'site') }}"><span class="site-nav-offcanvas-social__pill" aria-hidden="true">OK</span></a>
+                                        <a class="site-nav-offcanvas-social__link" href="{{ path('site_contacts') }}" aria-label="{{ 'aria.max'|trans({}, 'site') }}"><span class="site-nav-offcanvas-social__max" aria-hidden="true">M</span></a>
+                                        <a class="site-nav-offcanvas-social__link" href="{{ path('site_contacts') }}" aria-label="{{ 'aria.telegram'|trans({}, 'site') }}">{% include 'site/_icon.html.twig' with { name: 'telegram', class: 'site-nav-offcanvas-social__icon' } %}</a>
+                                        <a class="site-nav-offcanvas-social__link" href="{{ path('site_contacts') }}" aria-label="{{ 'aria.tenchat'|trans({}, 'site') }}">{% include 'site/_icon.html.twig' with { name: 'chat-dots-fill', class: 'site-nav-offcanvas-social__icon' } %}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <ul class="navbar-nav site-nav">
+                                <li class="nav-item"><a class="nav-link" href="{{ path('site_home') }}">{{ 'nav.home'|trans({}, 'site') }}</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ path('site_about') }}">{{ 'nav.about'|trans({}, 'site') }}</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ path('site_blog') }}">{{ 'nav.blog'|trans({}, 'site') }}</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ path('site_news') }}">{{ 'nav.news'|trans({}, 'site') }}</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ path('site_contacts') }}">{{ 'nav.contacts'|trans({}, 'site') }}</a></li>
+                            </ul>
+                            <a class="site-header-cta" href="{{ path('site_contacts') }}">{{ 'nav.demo'|trans({}, 'site') }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+                </div>
+            </nav>
+        </header>
+        <button type="button" id="site-scroll-top" class="site-scroll-top" hidden aria-label="{{ 'aria.scroll_top'|trans({}, 'site') }}">
+            {% include 'site/_icon.html.twig' with { name: 'arrow-up-short' } %}
+        </button>
+
+        <main class="site-main">
+            {% block site_content %}{% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                {% block site_footer_panel %}
+                    {% if wp_shell %}
+                        {% include 'site/_footer_wp.html.twig' %}
+                    {% else %}
+                        <div class="site-footer__panel">
+                            <div class="site-footer__brand">
+                                <a class="site-brand site-brand--footer" href="{{ path('site_home') }}" aria-label="{{ 'aria.brand'|trans({}, 'site') }}">
+                                    <span class="site-brand__mark">
+                                        <img src="{{ asset('images/smyalichi-landmark-logo.png') }}" alt="">
+                                    </span>
+                                    <span class="site-brand__text">{{ 'footer.wp_brand'|trans({}, 'site') }}</span>
+                                </a>
+                                <p>{{ 'footer.simple_tagline'|trans({}, 'site') }}</p>
+                            </div>
+                            <div class="site-footer__links">
+                                <a href="{{ path('site_about') }}">{{ 'footer.simple_about'|trans({}, 'site') }}</a>
+                                <a href="{{ path('site_blog') }}">{{ 'nav.blog'|trans({}, 'site') }}</a>
+                                <a href="{{ path('site_news') }}">{{ 'nav.news'|trans({}, 'site') }}</a>
+                                <a href="{{ path('site_contacts') }}">{{ 'nav.contacts'|trans({}, 'site') }}</a>
+                            </div>
+                            <div class="site-footer__meta">
+                                {% include 'site/_site_locale_switch.html.twig' %}
+                                <span>© {{ "now"|date("Y") }} {{ 'footer.wp_brand'|trans({}, 'site') }}</span>
+                                <a href="mailto:info@smyalichi.ru" data-turbo="false">info@smyalichi.ru</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if app.environment == 'prod' %}
+        <noscript>
+            <div><img src="https://mc.yandex.ru/watch/109066328" style="position:absolute; left:-9999px;" alt=""></div>
+        </noscript>
+    {% endif %}
+{% endblock %}

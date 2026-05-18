@@ -1,0 +1,186 @@
+.manual-price-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .35rem;
+}
+.manual-price-cell__form {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    margin: 0;
+    flex: 1 1 auto;
+}
+.manual-price-inline-input,
+.manual-price-submit {
+    display: none;
+}
+.manual-price-cell.is-editing .manual-price-inline-input,
+.manual-price-cell.is-editing .manual-price-submit {
+    display: inline-flex;
+}
+.manual-price-cell.is-editing .manual-price-display {
+    display: none;
+}
+.manual-price-display {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-weight: 500;
+    text-align: left;
+    color: inherit;
+    opacity: 1;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.manual-price-value {
+    color: #4e6f94;
+    border-bottom: 1px dotted #4e6f94;
+}
+.manual-price-trigger {
+    cursor: pointer;
+}
+.manual-price-cell__lock-slot {
+    min-width: 1.8rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.manual-lock-placeholder {
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+}
+.manual-lock-btn {
+    color: #8a94a3;
+}
+.dashboard-unmatched-widget {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin: .75rem 0;
+    padding: .65rem .8rem;
+    border: 1px solid #dbe4ef;
+    border-radius: .65rem;
+    background: #f8fafc;
+    color: #334155;
+}
+.dashboard-unmatched-widget__actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+}
+.toast-wrap {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+    pointer-events: none;
+}
+.toast-item {
+    min-width: 220px;
+    max-width: 320px;
+    padding: .55rem .7rem;
+    border-radius: .5rem;
+    background: #2d3748;
+    color: #fff;
+    font-size: .86rem;
+    line-height: 1.25;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .22);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity .2s ease, transform .2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+    pointer-events: auto;
+}
+.toast-item.is-show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.toast-item__text {
+    flex: 1 1 auto;
+}
+.toast-item__close {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    line-height: 1;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: .85;
+    padding: 0;
+}
+.toast-item__close:hover {
+    opacity: 1;
+}
+.toast-success {
+    background: #2f855a;
+}
+.toast-error {
+    background: #c53030;
+}
+.toast-warning {
+    background: #b7791f;
+}
+
+/* Шапка дашборда: pin сразу после названия организации (одна строка / перенос вместе) */
+.dash-th-competitor__inner {
+    min-width: 0;
+}
+.dash-th-competitor__title {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.35rem;
+    min-width: 0;
+    max-width: 100%;
+}
+.dash-th-competitor__name {
+    min-width: 0;
+}
+.dash-pin-col-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0.12rem 0.28rem;
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+    background: transparent;
+    color: #64748b;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.dash-pin-col-btn:hover {
+    color: #1e40af;
+    background: #e8eef7;
+    border-color: #c5d4eb;
+}
+.dash-pin-col-btn:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+}
+.dash-pin-col-btn__icon-on {
+    display: none;
+}
+.dash-pin-col-btn[aria-pressed='true'] {
+    color: #1e40af;
+    background: #dbeafe;
+    border-color: #93c5fd;
+}
+.dash-pin-col-btn[aria-pressed='true'] .dash-pin-col-btn__icon-off {
+    display: none;
+}
+.dash-pin-col-btn[aria-pressed='true'] .dash-pin-col-btn__icon-on {
+    display: inline;
+}

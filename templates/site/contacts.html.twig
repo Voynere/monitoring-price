@@ -1,0 +1,39 @@
+{% extends 'site/base.html.twig' %}
+
+{% block body_class %}site-layout wp-landing{% endblock %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ app.request.schemeAndHttpHost ~ canonical_path }}">{% endblock %}
+
+{% block site_content %}
+<section class="sl-inner-hero sl-inner-hero--wp">
+    <div class="sl-hero__deco-lines" aria-hidden="true"></div>
+    <div class="container">
+        <span class="sl-chip sl-chip--wp">{{ 'contacts.chip'|trans({}, 'site') }}</span>
+        {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'contacts.hero_title'|trans({}, 'site'), level: 1, wrap_extra: 'sl-wp-heading-wrap--center', on_navy: true } %}
+        <p>{{ 'contacts.hero_lead'|trans({}, 'site') }}</p>
+    </div>
+</section>
+
+<section class="sl-inner-section sl-inner-section--wp">
+    <div class="container">
+        <div class="sl-contact-panel sl-contact-panel--wp">
+            <div>
+                <span class="sl-chip sl-chip--wp-muted">{{ 'contacts.demo_chip'|trans({}, 'site') }}</span>
+                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'contacts.demo_title'|trans({}, 'site') } %}
+                <p>{{ 'contacts.demo_text'|trans({}, 'site') }}</p>
+                <a class="sl-button sl-button--primary sl-button--wp-hero" href="mailto:info@smyalichi.ru" data-turbo="false">info@smyalichi.ru</a>
+            </div>
+            <div class="sl-contact-card sl-contact-card--wp">
+                <span>{{ 'contacts.discuss_title'|trans({}, 'site') }}</span>
+                <ul>
+                    <li>{{ 'contacts.discuss_li1'|trans({}, 'site') }}</li>
+                    <li>{{ 'contacts.discuss_li2'|trans({}, 'site') }}</li>
+                    <li>{{ 'contacts.discuss_li3'|trans({}, 'site') }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'site/base.html.twig' %}
+
+{% block body_class %}site-layout wp-landing{% endblock %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ app.request.schemeAndHttpHost ~ canonical_path }}">{% endblock %}
+
+{% block structured_data %}
+    {% set site_origin = app.request.schemeAndHttpHost %}
+    {% set page_url = site_origin ~ app.request.pathInfo %}
+    {% set org_name = 'footer.wp_brand'|trans({}, 'site') %}
+    {% set logo_url = absolute_url(asset('images/smyalichi-landmark-logo.png')) %}
+    {% set page_title = block('title') %}
+    {% set page_description = block('meta_description') %}
+    {% set in_lang = app.request.locale == 'en' ? 'en' : 'ru' %}
+    {% set publisher_ref = { '@id': site_origin ~ '/#organization' } %}
+    {% set news_date = '2026-05-01' %}
+    {% set item_list = [
+        { '@type': 'ListItem', 'position': 1, 'item': { '@type': 'NewsArticle', 'headline': 'news.item1_title'|trans({}, 'site'), 'description': 'news.item1_text'|trans({}, 'site'), 'datePublished': news_date, 'url': page_url ~ '#news-item-1', 'inLanguage': in_lang, 'publisher': publisher_ref } },
+        { '@type': 'ListItem', 'position': 2, 'item': { '@type': 'NewsArticle', 'headline': 'news.item2_title'|trans({}, 'site'), 'description': 'news.item2_text'|trans({}, 'site'), 'datePublished': news_date, 'url': page_url ~ '#news-item-2', 'inLanguage': in_lang, 'publisher': publisher_ref } },
+        { '@type': 'ListItem', 'position': 3, 'item': { '@type': 'NewsArticle', 'headline': 'news.item3_title'|trans({}, 'site'), 'description': 'news.item3_text'|trans({}, 'site'), 'datePublished': news_date, 'url': page_url ~ '#news-item-3', 'inLanguage': in_lang, 'publisher': publisher_ref } }
+    ] %}
+    {% set schema_graph = site_ld_graph(
+        'collection',
+        site_origin,
+        page_url,
+        app.request.locale,
+        org_name,
+        logo_url,
+        page_title,
+        page_description,
+        { items: item_list }
+    ) %}
+    {% include 'site/_json_ld.html.twig' with { graph: schema_graph } %}
+{% endblock %}
+
+{% block site_content %}
+<section class="sl-inner-hero sl-inner-hero--wp">
+    <div class="sl-hero__deco-lines" aria-hidden="true"></div>
+    <div class="container">
+        <span class="sl-chip sl-chip--wp">{{ 'news.chip'|trans({}, 'site') }}</span>
+        {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'news.hero_title'|trans({}, 'site'), level: 1, wrap_extra: 'sl-wp-heading-wrap--center', on_navy: true } %}
+        <p>{{ 'news.hero_lead'|trans({}, 'site') }}</p>
+    </div>
+</section>
+
+<section class="sl-inner-section sl-inner-section--wp">
+    <div class="container">
+        <div class="sl-timeline sl-timeline--wp">
+            <article id="news-item-1">
+                <time datetime="2026-05">{{ 'news.time1'|trans({}, 'site') }}</time>
+                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'news.item1_title'|trans({}, 'site') } %}
+                <p>{{ 'news.item1_text'|trans({}, 'site') }}</p>
+            </article>
+            <article id="news-item-2">
+                <time datetime="2026-05">{{ 'news.time1'|trans({}, 'site') }}</time>
+                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'news.item2_title'|trans({}, 'site') } %}
+                <p>{{ 'news.item2_text'|trans({}, 'site') }}</p>
+            </article>
+            <article id="news-item-3">
+                <time datetime="2026-05">{{ 'news.time1'|trans({}, 'site') }}</time>
+                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'news.item3_title'|trans({}, 'site') } %}
+                <p>{{ 'news.item3_text'|trans({}, 'site') }}</p>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}

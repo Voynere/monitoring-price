@@ -1,0 +1,69 @@
+/* Admin layout: no page-level horizontal scroll; scroll only inside .admin-scroll-x. */
+
+body.admin-app {
+    margin: 0;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.admin-shell {
+    display: flex;
+    font-family: Inter, sans-serif;
+    max-width: 100%;
+    min-height: 100vh;
+    overflow-x: clip;
+}
+
+.admin-sidebar {
+    background: #043873;
+    color: #fff;
+    flex-shrink: 0;
+    overflow-x: clip;
+    padding: 20px 0;
+    width: 220px;
+}
+
+.admin-main {
+    background: #f6f8fb;
+    box-sizing: border-box;
+    flex: 1;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+    padding: 28px 32px;
+}
+
+/* Wide tables / pre blocks: horizontal scroll inside this box only. */
+.admin-scroll-x {
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+.admin-scroll-x > table {
+    min-width: 100%;
+    width: max-content;
+}
+
+.admin-scroll-x > pre {
+    max-width: 100%;
+    white-space: pre;
+}
+
+/* Optional: chart row on narrow viewports */
+.admin-scroll-x--soft {
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+body.admin-login {
+    margin: 0;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+body.admin-login main {
+    box-sizing: border-box;
+    max-width: 100%;
+}

@@ -1,0 +1,9 @@
+<span class="site-brand__text site-brand__text--wp">
+    <span class="site-brand__namestack">
+        <span class="site-brand__word site-brand__word--with-icon-letter" aria-hidden="true">
+            <span class="site-brand__word-part">{{ 'brand.wp_word_before'|trans({}, 'site') }}</span><span class="site-brand__letter-mark">{% include 'site/_logo_wp_mark.html.twig' %}</span><span class="site-brand__word-part">{{ 'brand.wp_word_after'|trans({}, 'site') }}</span>
+        </span>
+        {% include 'site/_wp_underline_brush.html.twig' with { brand: true } %}
+    </span>
+    <span class="site-brand__tagline">{{ 'brand.wp_tagline'|trans({}, 'site') }}</span>
+</span>
