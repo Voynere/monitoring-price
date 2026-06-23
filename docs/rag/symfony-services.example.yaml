@@ -1,0 +1,24 @@
+# Symfony DI wiring example for full Gitea monolith
+# Copy into config/services/rag.yaml
+
+parameters:
+    env(RAG_RUNTIME_URL): 'http://rag-api:8080'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Context\Kernel\RAG\:
+        resource: '%kernel.project_dir%/modules/kernel/src/RAG/'
+
+    App\Context\Kernel\RAG\Infrastructure\HttpRagRuntimeClient:
+        arguments:
+            $baseUrl: '%env(RAG_RUNTIME_URL)%'
+
+    App\Context\Kernel\RAG\Application\RagQueryService: ~
+    App\Context\Kernel\RAG\Application\BuildRagContextUseCase: ~
+
+    App\Context\Kernel\RAG\Port\RagQueryPort: '@App\Context\Kernel\RAG\Application\RagQueryService'
+    App\Context\Kernel\RAG\Port\RagRetrieverPort: '@App\Context\Kernel\RAG\Infrastructure\HttpRagRuntimeClient'
+    App\Context\Kernel\RAG\Port\RagIndexerPort: '@App\Context\Kernel\RAG\Infrastructure\HttpRagRuntimeClient'

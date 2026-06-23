@@ -48,6 +48,12 @@ final class SiteController extends AbstractController
         return $this->renderPage($buildSitePageRenderPayloadUseCase, SitePageRegistry::BLOG_POST_KPI_METRICS);
     }
 
+    #[Route(path: ['ru' => '/blog/llm-i-parsing-v-cenovom-monitoringe', 'en' => '/en/blog/llm-parsing-in-price-monitoring'], name: 'site_blog_post_llm_parsing', methods: ['GET'])]
+    public function blogPostLlmParsing(BuildSitePageRenderPayloadUseCase $buildSitePageRenderPayloadUseCase): Response
+    {
+        return $this->renderPage($buildSitePageRenderPayloadUseCase, SitePageRegistry::BLOG_POST_LLM_PARSING);
+    }
+
     #[Route(path: ['ru' => '/news', 'en' => '/en/news'], name: 'site_news', methods: ['GET'])]
     public function news(BuildSitePageRenderPayloadUseCase $buildSitePageRenderPayloadUseCase): Response
     {

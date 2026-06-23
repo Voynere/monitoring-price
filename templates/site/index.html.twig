@@ -271,7 +271,8 @@
             </article>
             <article class="sl-post-card sl-post-card--wp">
                 <span>{{ 'blog.post3_tag'|trans({}, 'site') }}</span>
-                <h2><a class="sl-post-card__title-link" href="{{ path('site_blog.' ~ locale_suffix) ~ '#blog-post-3' }}" data-turbo="false">{{ 'blog.post3_title'|trans({}, 'site') }}</a></h2>
+                {% set post3_href = path('site_blog_post_llm_parsing.' ~ locale_suffix) %}
+                <h2><a class="sl-post-card__title-link" href="{{ post3_href }}">{{ 'blog.post3_title'|trans({}, 'site') }}</a></h2>
                 <p>{{ 'blog.post3_text'|trans({}, 'site') }}</p>
             </article>
         </div>

@@ -22,18 +22,21 @@ final class SitemapBuilder
             $ruLoc = $baseUrl.$page['canonical_ru'];
             $enLoc = $baseUrl.$page['canonical_en'];
             $priority = $page['sitemap_priority'];
+            $lastmod = $page['sitemap_lastmod'];
             $alts = self::sitemapAlternateLinksXml($ruLoc, $enLoc);
 
             $xmlItems .= sprintf(
-                "<url><loc>%s</loc>\n%s<changefreq>weekly</changefreq><priority>%s</priority></url>\n",
+                "<url><loc>%s</loc>\n%s<lastmod>%s</lastmod><changefreq>weekly</changefreq><priority>%s</priority></url>\n",
                 htmlspecialchars($ruLoc, ENT_XML1),
                 $alts,
+                $lastmod,
                 $priority
             );
             $xmlItems .= sprintf(
-                "<url><loc>%s</loc>\n%s<changefreq>weekly</changefreq><priority>%s</priority></url>\n",
+                "<url><loc>%s</loc>\n%s<lastmod>%s</lastmod><changefreq>weekly</changefreq><priority>%s</priority></url>\n",
                 htmlspecialchars($enLoc, ENT_XML1),
                 $alts,
+                $lastmod,
                 $priority
             );
         }
