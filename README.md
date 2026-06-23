@@ -37,6 +37,14 @@ Smyalichi Monitoring Price — платформа для мониторинга 
 
 Публичная версия репозитория содержит безопасный showcase-срез и не раскрывает критичные внутренние реализации.
 
+### Deep RAG (Sprint 1)
+
+- Архитектурный план: [docs/rag/PLAN.md](docs/rag/PLAN.md)
+- Runtime-сервис: [rag-platform/](rag-platform/)
+- Symfony-фасад: [modules/kernel/src/RAG/](modules/kernel/src/RAG/)
+- Деплой: [docs/rag/DEPLOY.md](docs/rag/DEPLOY.md)
+- Интеграция showcase: [SHOWCASE.md](SHOWCASE.md)
+
 ---
 
 ## EN
@@ -75,3 +83,11 @@ The project is built as a modular monolith with clear bounded contexts:
 - Classical algorithms and LLM-based processing are combined in a single production pipeline.
 
 This public repository exposes a safe showcase subset and does not include critical internal implementations.
+
+### Deep RAG (Sprint 1)
+
+- Architecture plan: [docs/rag/PLAN.md](docs/rag/PLAN.md)
+- Runtime service: [rag-platform/](rag-platform/)
+- Symfony facade: [modules/kernel/src/RAG/](modules/kernel/src/RAG/)
+- Deploy guide: [docs/rag/DEPLOY.md](docs/rag/DEPLOY.md)
+- Showcase integration: [SHOWCASE.md](SHOWCASE.md)

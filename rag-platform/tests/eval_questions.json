@@ -1,0 +1,127 @@
+[
+  {
+    "module": "price",
+    "question": "Как работает fallback при ошибке парсера?",
+    "expected_source_types": ["code", "doc"]
+  },
+  {
+    "module": "price",
+    "question": "Где описаны правила сопоставления товаров по SKU?",
+    "expected_source_types": ["code", "doc"]
+  },
+  {
+    "module": "price",
+    "question": "Какие уровни идентификации используются в matching engine?",
+    "expected_source_types": ["blog", "doc"]
+  },
+  {
+    "module": "price",
+    "question": "How is competitor price validation implemented?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "price",
+    "question": "What happens when CSS selectors become stale?",
+    "expected_source_types": ["blog", "code"]
+  },
+  {
+    "module": "kernel",
+    "question": "Как модули вызывают RAG через kernel/RAG?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "kernel",
+    "question": "What is RagQueryPort responsible for?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "kernel",
+    "question": "How does HttpRagRuntimeClient call rag-platform?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "site",
+    "question": "Какие страницы включены в sitemap?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "site",
+    "question": "How is JSON-LD generated for blog posts?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "site",
+    "question": "Где задаются canonical URL для RU и EN?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "rag",
+    "question": "Как устроен hybrid search в rag-platform?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "rag",
+    "question": "What embedding model is recommended for Smyalichi RAG?",
+    "expected_source_types": ["doc"]
+  },
+  {
+    "module": "rag",
+    "question": "Why is Elasticsearch optional at MVP stage?",
+    "expected_source_types": ["doc"]
+  },
+  {
+    "module": "rag",
+    "question": "Какие компоненты входят в docker-compose RAG stack?",
+    "expected_source_types": ["code", "doc"]
+  },
+  {
+    "module": "data",
+    "question": "How should RAG explain dashboard metric anomalies?",
+    "expected_source_types": ["doc"]
+  },
+  {
+    "module": "seo",
+    "question": "How can RAG support competitor SEO analysis?",
+    "expected_source_types": ["doc", "code"]
+  },
+  {
+    "module": "price",
+    "question": "Как LLM помогает парсить нестандартные карточки?",
+    "expected_source_types": ["blog"]
+  },
+  {
+    "module": "price",
+    "question": "What production guardrails are required for LLM parsing?",
+    "expected_source_types": ["blog", "doc"]
+  },
+  {
+    "module": "kernel",
+    "question": "Какие RagCollection константы определены?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "site",
+    "question": "Какой маршрут у третьей статьи блога про LLM?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "rag",
+    "question": "How does the code ingestor chunk PHP files?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "price",
+    "question": "Какой top-k рекомендуется после rerank?",
+    "expected_source_types": ["doc"]
+  },
+  {
+    "module": "rag",
+    "question": "What queue name is used for indexing workers?",
+    "expected_source_types": ["code"]
+  },
+  {
+    "module": "kernel",
+    "question": "How to enqueue repository reindex from Symfony?",
+    "expected_source_types": ["code"]
+  }
+]

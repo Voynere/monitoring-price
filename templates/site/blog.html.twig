@@ -17,10 +17,11 @@
     {% set publisher_ref = { '@id': site_origin ~ '/#organization' } %}
     {% set post1_article_url = absolute_url(path('site_blog_post_monitoring.' ~ (in_lang == 'en' ? 'en' : 'ru'))) %}
     {% set post2_article_url = absolute_url(path('site_blog_post_kpi_metrics.' ~ (in_lang == 'en' ? 'en' : 'ru'))) %}
+    {% set post3_article_url = absolute_url(path('site_blog_post_llm_parsing.' ~ (in_lang == 'en' ? 'en' : 'ru'))) %}
     {% set item_list = [
         { '@type': 'ListItem', 'position': 1, 'item': { '@type': 'BlogPosting', 'headline': 'blog.post1_title'|trans({}, 'site'), 'description': 'blog.post1_text'|trans({}, 'site'), 'url': post1_article_url, 'inLanguage': in_lang, 'publisher': publisher_ref } },
         { '@type': 'ListItem', 'position': 2, 'item': { '@type': 'BlogPosting', 'headline': 'blog.post2_title'|trans({}, 'site'), 'description': 'blog.post2_text'|trans({}, 'site'), 'url': post2_article_url, 'inLanguage': in_lang, 'publisher': publisher_ref } },
-        { '@type': 'ListItem', 'position': 3, 'item': { '@type': 'BlogPosting', 'headline': 'blog.post3_title'|trans({}, 'site'), 'description': 'blog.post3_text'|trans({}, 'site'), 'url': page_url ~ '#blog-post-3', 'inLanguage': in_lang, 'publisher': publisher_ref } }
+        { '@type': 'ListItem', 'position': 3, 'item': { '@type': 'BlogPosting', 'headline': 'blog.post3_title'|trans({}, 'site'), 'description': 'blog.post3_text'|trans({}, 'site'), 'url': post3_article_url, 'inLanguage': in_lang, 'publisher': publisher_ref } }
     ] %}
     {% set schema_graph = site_ld_graph(
         'collection',
@@ -68,8 +69,10 @@
             </article>
             <article id="blog-post-3" class="sl-post-card sl-post-card--wp">
                 <span>{{ 'blog.post3_tag'|trans({}, 'site') }}</span>
-                {% include 'site/_wp_heading_with_underline.html.twig' with { title: 'blog.post3_title'|trans({}, 'site') } %}
+                {% set post3_href = path('site_blog_post_llm_parsing.' ~ (app.request.locale == 'en' ? 'en' : 'ru')) %}
+                <h2><a class="sl-post-card__title-link" href="{{ post3_href }}">{{ 'blog.post3_title'|trans({}, 'site') }}</a></h2>
                 <p>{{ 'blog.post3_text'|trans({}, 'site') }}</p>
+                <p class="sl-post-card__readmore"><a class="sl-wp-text-link" href="{{ post3_href }}">{{ 'blog.read_article'|trans({}, 'site') }} {% include 'site/_icon.html.twig' with { name: 'arrow-right' } %}</a></p>
             </article>
         </div>
     </div>

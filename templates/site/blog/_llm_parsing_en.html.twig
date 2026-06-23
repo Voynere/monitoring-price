@@ -1,0 +1,35 @@
+<h2>Why LLM belongs in price monitoring</h2>
+<p>Classical parsers work well on stable storefronts but break on custom markup, dynamic blocks, and noisy product titles. An LLM can interpret HTML fragments, recover card meaning, and suggest matching rules — as long as every answer passes domain validation.</p>
+<p>At Smyalichi we do not replace deterministic rules with a model. The LLM is a suggestion and fallback layer: rules and heuristics run first, the model proposes a hypothesis, and the production pipeline validates it against schema, price bounds, and source history.</p>
+
+<h2>Architecture: rules + LLM + RAG</h2>
+<p>For complex questions about code, parsers, and fallback strategies we keep retrieval in a dedicated RAG runtime. Symfony modules (`price`, `data`, `seo`) call the `kernel/RAG` facade while `rag-platform` handles embeddings, hybrid search, and indexing.</p>
+<ul>
+    <li><strong>Indexing:</strong> PHP classes, configs, docs, blog content, and anonymized parser error logs.</li>
+    <li><strong>Retrieval:</strong> pgvector + PostgreSQL tsvector, reranker, top-k 5–8 chunks.</li>
+    <li><strong>Generation:</strong> Qwen via an OpenAI-compatible gateway with citation IDs.</li>
+</ul>
+
+<h2>Where LLM delivers the most value</h2>
+<h3>1. Parsing non-standard cards</h3>
+<p>The model extracts title, price, unit, and promo flags from a DOM fragment when CSS selectors are stale. Validation enforces numeric price, allowed currency, and minimum title length.</p>
+
+<h3>2. Product matching</h3>
+<p>For near-duplicate service names the LLM proposes a score and rationale. The rule engine applies confidence thresholds and routes edge cases to manual review.</p>
+
+<h3>3. Explaining anomalies</h3>
+<p>When a competitor price drops 40% overnight, analysts get an alert plus a hypothesis — promotion, parser bug, SKU change, or packaging update — with links to similar incidents from RAG.</p>
+
+<h2>Production guardrails</h2>
+<p>Without these constraints LLM quickly becomes noise in monitoring:</p>
+<ul>
+    <li>structured output (JSON schema) for machine-readable answers;</li>
+    <li>timeouts and fallback to the classical parser;</li>
+    <li>Redis cache for embeddings and frequent queries;</li>
+    <li>Langfuse/OpenTelemetry traces for retrieval and generation;</li>
+    <li>an eval set of 20–30 parser questions before release.</li>
+</ul>
+
+<h2>What is next</h2>
+<p>RAG Sprint 1 already ships a code ingestor, hybrid search, and the `/rag/smyalichi/query` API. Next we wire `kernel/RAG` into the full Gitea monolith and surface parser hints in the admin UI.</p>
+<p>To see the product in action visit <a href="https://price.smyalichi.ru" rel="noopener noreferrer" target="_blank" data-turbo="false">price.smyalichi.ru</a>.</p>

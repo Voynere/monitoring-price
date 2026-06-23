@@ -1,0 +1,123 @@
+{% extends 'site/base.html.twig' %}
+
+{% block body_class %}site-layout wp-landing{% endblock %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ app.request.schemeAndHttpHost ~ canonical_path }}">{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block og_extra %}
+    {% set article_image = absolute_url(asset('images/blog-llm-parsing-cover.svg')) %}
+    {{ parent() }}
+    <meta property="og:image" content="{{ article_image }}">
+    <meta property="og:image:secure_url" content="{{ article_image }}">
+    <meta property="og:image:type" content="image/svg+xml">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ 'schema.llm_post_image_alt'|trans({}, 'site') }}">
+    {% set published_iso = 'schema.llm_post_published_iso'|trans({}, 'site') %}
+    {% set modified_iso = 'schema.llm_post_modified_iso'|trans({}, 'site') %}
+    {% set author_name = 'schema.llm_post_author'|trans({}, 'site') %}
+    <meta property="article:published_time" content="{{ published_iso }}">
+    <meta property="article:modified_time" content="{{ modified_iso }}">
+    <meta property="article:author" content="{{ author_name }}">
+    <meta property="article:section" content="{{ 'blog.chip'|trans({}, 'site') }}">
+{% endblock %}
+
+{% block structured_data %}
+    {% set site_origin = app.request.schemeAndHttpHost %}
+    {% set page_url = site_origin ~ app.request.pathInfo %}
+    {% set org_name = 'footer.wp_brand'|trans({}, 'site') %}
+    {% set logo_url = absolute_url(asset('images/smyalichi-landmark-logo.png')) %}
+    {% set article_image = absolute_url(asset('images/blog-llm-parsing-cover.svg')) %}
+    {% set in_lang = app.request.locale == 'en' ? 'en' : 'ru' %}
+    {% set publisher_ref = { '@id': site_origin ~ '/#organization' } %}
+    {% set author_url = page_url ~ '#author' %}
+    {% set published_iso = 'schema.llm_post_published_iso'|trans({}, 'site') %}
+    {% set modified_iso = 'schema.llm_post_modified_iso'|trans({}, 'site') %}
+    {% set author_name = 'schema.llm_post_author'|trans({}, 'site') %}
+    {% set article_html = include('site/blog/_llm_parsing_' ~ (app.request.locale == 'en' ? 'en' : 'ru') ~ '.html.twig') %}
+    {% set article_text = article_html|striptags|replace({'\n': ' ', '\r': ' ', '\t': ' '})|trim %}
+    {% set article_node = {
+        '@type': 'BlogPosting',
+        '@id': page_url ~ '#article',
+        'mainEntityOfPage': { '@type': 'WebPage', '@id': page_url },
+        'url': page_url,
+        'headline': 'blog.post3_title'|trans({}, 'site'),
+        'description': 'blog.post3_text'|trans({}, 'site'),
+        'datePublished': published_iso,
+        'dateModified': modified_iso,
+        'author': { '@type': 'Person', 'name': author_name, 'url': author_url },
+        'image': [article_image],
+        'articleBody': article_text,
+        'articleSection': 'blog.chip'|trans({}, 'site'),
+        'inLanguage': in_lang,
+        'publisher': publisher_ref,
+        'isPartOf': { '@id': site_origin ~ '/#website' }
+    } %}
+    {% set schema_graph = site_ld_graph(
+        'article',
+        site_origin,
+        page_url,
+        app.request.locale,
+        org_name,
+        logo_url,
+        page_title,
+        meta_description,
+        { articleNode: article_node }
+    ) %}
+    {% include 'site/_json_ld.html.twig' with { graph: schema_graph } %}
+{% endblock %}
+
+{% block site_content %}
+<section class="sl-inner-hero sl-inner-hero--wp">
+    <div class="sl-hero__deco-lines" aria-hidden="true"></div>
+    <div class="container">
+        {% set locale_suffix = app.request.locale == 'en' ? 'en' : 'ru' %}
+        <span class="sl-chip sl-chip--wp">{{ 'blog.chip'|trans({}, 'site') }}</span>
+        <h1 class="sl-inner-hero__article-title">{{ 'blog.post3_title'|trans({}, 'site') }}</h1>
+        <p class="sl-inner-hero__article-lead">{{ 'blog.post3_text'|trans({}, 'site') }}</p>
+        <nav class="sl-inner-hero__breadcrumbs" aria-label="{{ 'blog.breadcrumbs_label'|trans({}, 'site') }}">
+            <a href="{{ path('site_home.' ~ locale_suffix) }}">{{ 'nav.home'|trans({}, 'site') }}</a>
+            <span aria-hidden="true">/</span>
+            <a href="{{ path('site_blog.' ~ locale_suffix) }}">{{ 'blog.chip'|trans({}, 'site') }}</a>
+            <span aria-hidden="true">/</span>
+            <span>{{ 'blog.post3_title'|trans({}, 'site') }}</span>
+        </nav>
+    </div>
+</section>
+
+<section class="sl-inner-section sl-inner-section--wp">
+    <div class="container">
+        {% set published_iso = 'schema.llm_post_published_iso'|trans({}, 'site') %}
+        {% set modified_iso = 'schema.llm_post_modified_iso'|trans({}, 'site') %}
+        {% set author_name = 'schema.llm_post_author'|trans({}, 'site') %}
+        <article class="sl-wp-article" itemscope itemtype="https://schema.org/BlogPosting" itemid="{{ app.request.schemeAndHttpHost ~ app.request.pathInfo }}#article">
+            <meta itemprop="url" content="{{ app.request.schemeAndHttpHost ~ app.request.pathInfo }}">
+            <meta itemprop="mainEntityOfPage" content="{{ app.request.schemeAndHttpHost ~ app.request.pathInfo }}">
+            <meta itemprop="datePublished" content="{{ published_iso }}">
+            <meta itemprop="dateModified" content="{{ modified_iso }}">
+            <meta itemprop="description" content="{{ 'blog.post3_text'|trans({}, 'site') }}">
+            <meta itemprop="articleSection" content="{{ 'blog.chip'|trans({}, 'site') }}">
+            <meta itemprop="inLanguage" content="{{ app.request.locale == 'en' ? 'en' : 'ru' }}">
+            <meta itemprop="image" content="{{ absolute_url(asset('images/blog-llm-parsing-cover.svg')) }}">
+            <h1 class="visually-hidden" itemprop="headline">{{ 'blog.post3_title'|trans({}, 'site') }}</h1>
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                <meta itemprop="name" content="{{ author_name }}">
+                <meta itemprop="url" content="{{ app.request.schemeAndHttpHost ~ app.request.pathInfo }}#author">
+            </span>
+            <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                <meta itemprop="name" content="{{ 'footer.wp_brand'|trans({}, 'site') }}">
+                <meta itemprop="url" content="{{ app.request.schemeAndHttpHost ~ '/' }}">
+                <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                    <meta itemprop="url" content="{{ absolute_url(asset('images/smyalichi-landmark-logo.png')) }}">
+                </span>
+            </span>
+            <div itemprop="articleBody">
+                {% include 'site/blog/_llm_parsing_' ~ (app.request.locale == 'en' ? 'en' : 'ru') ~ '.html.twig' %}
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

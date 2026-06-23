@@ -12,6 +12,7 @@ final class SitePageRegistry
     public const BLOG = 'blog';
     public const BLOG_POST_MONITORING = 'blog_post_monitoring';
     public const BLOG_POST_KPI_METRICS = 'blog_post_kpi_metrics';
+    public const BLOG_POST_LLM_PARSING = 'blog_post_llm_parsing';
     public const NEWS = 'news';
 
     /**
@@ -21,7 +22,8 @@ final class SitePageRegistry
      *   meta_description_key:string,
      *   canonical_ru:string,
      *   canonical_en:string,
-     *   sitemap_priority:string
+     *   sitemap_priority:string,
+     *   sitemap_lastmod:string
      * }>
      */
     public function all(): array
@@ -34,6 +36,7 @@ final class SitePageRegistry
                 'canonical_ru' => '/',
                 'canonical_en' => '/en',
                 'sitemap_priority' => '1.0',
+                'sitemap_lastmod' => '2026-06-01',
             ],
             self::ABOUT => [
                 'template' => 'site/about.html.twig',
@@ -42,6 +45,7 @@ final class SitePageRegistry
                 'canonical_ru' => '/about',
                 'canonical_en' => '/en/about',
                 'sitemap_priority' => '0.8',
+                'sitemap_lastmod' => '2026-05-15',
             ],
             self::CONTACTS => [
                 'template' => 'site/contacts.html.twig',
@@ -50,6 +54,7 @@ final class SitePageRegistry
                 'canonical_ru' => '/contacts',
                 'canonical_en' => '/en/contacts',
                 'sitemap_priority' => '0.7',
+                'sitemap_lastmod' => '2026-05-10',
             ],
             self::BLOG => [
                 'template' => 'site/blog.html.twig',
@@ -58,6 +63,7 @@ final class SitePageRegistry
                 'canonical_ru' => '/blog',
                 'canonical_en' => '/en/blog',
                 'sitemap_priority' => '0.9',
+                'sitemap_lastmod' => '2026-06-20',
             ],
             self::BLOG_POST_MONITORING => [
                 'template' => 'site/blog_post_monitoring.html.twig',
@@ -66,6 +72,7 @@ final class SitePageRegistry
                 'canonical_ru' => '/blog/monitoring-cen-konkurentov',
                 'canonical_en' => '/en/blog/competitor-price-monitoring-guide',
                 'sitemap_priority' => '0.85',
+                'sitemap_lastmod' => '2026-06-10',
             ],
             self::BLOG_POST_KPI_METRICS => [
                 'template' => 'site/blog_post_kpi_metrics.html.twig',
@@ -74,6 +81,16 @@ final class SitePageRegistry
                 'canonical_ru' => '/blog/7-metric-dlya-analiza-cenovoy-strategii',
                 'canonical_en' => '/en/blog/seven-metrics-pricing-strategy-kpi',
                 'sitemap_priority' => '0.84',
+                'sitemap_lastmod' => '2026-06-05',
+            ],
+            self::BLOG_POST_LLM_PARSING => [
+                'template' => 'site/blog_post_llm_parsing.html.twig',
+                'meta_title_key' => 'meta.blog_post_llm.title',
+                'meta_description_key' => 'meta.blog_post_llm.description',
+                'canonical_ru' => '/blog/llm-i-parsing-v-cenovom-monitoringe',
+                'canonical_en' => '/en/blog/llm-parsing-in-price-monitoring',
+                'sitemap_priority' => '0.83',
+                'sitemap_lastmod' => '2026-06-23',
             ],
             self::NEWS => [
                 'template' => 'site/news.html.twig',
@@ -82,6 +99,7 @@ final class SitePageRegistry
                 'canonical_ru' => '/news',
                 'canonical_en' => '/en/news',
                 'sitemap_priority' => '0.8',
+                'sitemap_lastmod' => '2026-05-01',
             ],
         ];
     }
@@ -93,7 +111,8 @@ final class SitePageRegistry
      *   meta_description_key:string,
      *   canonical_ru:string,
      *   canonical_en:string,
-     *   sitemap_priority:string
+     *   sitemap_priority:string,
+     *   sitemap_lastmod:string
      * }
      */
     public function get(string $page): array
