@@ -19,6 +19,7 @@ docker compose -f docker-compose.yml pull
 docker compose -f docker-compose.yml up -d --build
 docker compose exec rag-api rag-ingest --root /app/repo
 curl -fsS http://localhost:8080/rag/smyalichi/health
+./scripts/smoke-prod.sh
 ```
 
 ## Интеграция с Symfony (Gitea monolith)

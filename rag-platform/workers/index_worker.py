@@ -8,6 +8,7 @@ import pika
 
 from ingestors.smyalichi.code_ingestor import SmyalichiCodeIngestor
 from pipeline.config import Settings
+from pipeline.parent_child import attach_parent_child, flatten_for_index
 from pipeline.indexer import PgVectorIndexer
 
 
@@ -29,7 +30,7 @@ def handle_message(body: bytes, settings: Settings) -> None:
     payload = json.loads(body.decode("utf-8"))
     root = Path(payload.get("root", ".")).resolve()
     ingestor = SmyalichiCodeIngestor(root)
-    chunks = ingestor.ingest()
+    chunks = flatten_for_index(attach_parent_child(ingestor.ingest()))
     indexer = PgVectorIndexer(settings)
     indexed = indexer.upsert(chunks)
     print(f"Worker indexed {indexed} chunks from {root}")
