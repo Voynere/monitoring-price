@@ -21,22 +21,33 @@ def attach_parent_child(chunks: list[DocumentChunk]) -> list[ParentChildChunk]:
     for path, path_chunks in by_path.items():
         class_chunks = [c for c in path_chunks if c.metadata.extra.get("kind") == "class"]
         method_chunks = [c for c in path_chunks if c.metadata.extra.get("kind") == "method"]
-        if class_chunks and method_chunks:
+        if method_chunks and not class_chunks:
+            sample = method_chunks[0]
+            parent = DocumentChunk(
+                id=f"{sample.id}_parent",
+                content=f"file {path}",
+                metadata=sample.metadata.model_copy(
+                    update={"extra": {**sample.metadata.extra, "kind": "class", "role": "parent", "symbol": path}}
+                ),
+            )
+        elif class_chunks:
             parent = class_chunks[0]
             parent_meta = parent.metadata.model_copy(
                 update={"extra": {**parent.metadata.extra, "role": "parent"}}
             )
             parent = parent.model_copy(update={"metadata": parent_meta})
-            children = []
-            for child in method_chunks:
-                child_meta = child.metadata.model_copy(
-                    update={"extra": {**child.metadata.extra, "role": "child", "parent_id": parent.id}}
-                )
-                children.append(child.model_copy(update={"metadata": child_meta}))
-            result.append(ParentChildChunk(parent=parent, children=children))
         else:
             for chunk in path_chunks:
                 result.append(ParentChildChunk(parent=chunk, children=[]))
+            continue
+
+        children = []
+        for child in method_chunks:
+            child_meta = child.metadata.model_copy(
+                update={"extra": {**child.metadata.extra, "role": "child", "parent_id": parent.id}}
+            )
+            children.append(child.model_copy(update={"metadata": child_meta}))
+        result.append(ParentChildChunk(parent=parent, children=children))
     return result
 
 

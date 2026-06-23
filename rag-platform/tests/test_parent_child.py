@@ -12,8 +12,13 @@ def test_parent_child_groups_methods_under_class(tmp_path) -> None:
         """<?php
 final class Fallback
 {
-    public function run(): void {}
-    public function retry(): void {}
+    public function run(): void
+    {
+    }
+
+    public function retry(): void
+    {
+    }
 }
 """,
         encoding="utf-8",
