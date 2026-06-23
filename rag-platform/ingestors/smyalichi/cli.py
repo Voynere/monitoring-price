@@ -6,6 +6,7 @@ from pathlib import Path
 from ingestors.smyalichi.code_ingestor import SmyalichiCodeIngestor
 from pipeline.config import Settings
 from pipeline.indexer import PgVectorIndexer
+from pipeline.parent_child import attach_parent_child, flatten_for_index
 
 
 def main() -> None:
@@ -16,6 +17,7 @@ def main() -> None:
 
     ingestor = SmyalichiCodeIngestor(args.root)
     chunks = ingestor.ingest()
+    chunks = flatten_for_index(attach_parent_child(chunks))
     print(f"Discovered {len(chunks)} chunks from {len(ingestor.discover_files())} files")
 
     if args.dry_run:
