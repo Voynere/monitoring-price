@@ -29,11 +29,13 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          tools: phpunit
+          tools: composer:v2
+      - name: Install PHP dev dependencies
+        run: composer install --no-interaction --prefer-dist
       - name: PHP syntax check
         run: find modules -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: PHPUnit site SEO tests
-        run: phpunit modules/site/tests
+        run: vendor/bin/phpunit
 
   docker-build:
     runs-on: ubuntu-latest
