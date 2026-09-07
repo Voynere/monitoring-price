@@ -91,3 +91,5 @@ This public repository exposes a safe showcase subset and does not include criti
 - Symfony facade: [modules/kernel/src/RAG/](modules/kernel/src/RAG/)
 - Deploy guide: [docs/rag/DEPLOY.md](docs/rag/DEPLOY.md)
 - Showcase integration: [SHOWCASE.md](SHOWCASE.md)
+
+<!-- check 1788819357419 -->
